@@ -1,10 +1,10 @@
 import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:contacts_app/domain/contact.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:http/http.dart' as http;
 
 class ContactService {
-  final String baseUrl =
-      'https://685cf7cd769de2bf085eaec7.mockapi.io/contacts/contact';
+  final String baseUrl = dotenv.env['API_BASE_URL']!;
 
   Future<List<Contact>> fetchAll() async {
     final res = await http.get(Uri.parse(baseUrl));
@@ -33,7 +33,6 @@ class ContactService {
         'cityName': contact.cityName,
       }),
     );
-
     if (res.statusCode != 201) throw Exception('Erro ao criar contato');
   }
 
@@ -49,7 +48,6 @@ class ContactService {
         'cityName': contact.cityName,
       }),
     );
-
     if (res.statusCode != 200) throw Exception('Erro ao atualizar contato');
   }
 }
