@@ -10,10 +10,6 @@ Um aplicativo de agenda de contatos moderno e elegante desenvolvido em Flutter, 
   <img src="screenshots/3.png" alt="Editar Contato" width="250"/>
 </div>
 
-<div align="center">
-  <img src="screenshots/delete_contact.gif" alt="Deletar Contato" width="250"/>
-  <img src="screenshots/app_theme.png" alt="Tema do App" width="250"/>
-</div>
 
 ## ✨ Funcionalidades
 
