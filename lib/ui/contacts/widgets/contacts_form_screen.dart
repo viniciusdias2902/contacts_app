@@ -1,6 +1,7 @@
 import 'package:contacts_app/domain/contact.dart';
 import 'package:contacts_app/ui/contacts/viewmodel/contact_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 import 'package:provider/provider.dart';
 
 class ContactFormScreen extends StatefulWidget {
@@ -72,6 +73,17 @@ class _ContactFormScreenState extends State<ContactFormScreen> {
     }
   }
 
+  String? _validateEmail(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return 'Campo obrigatório';
+    }
+    final emailRegex = RegExp(r'^[\w\.-]+@[\w\.-]+\.\w+$');
+    if (!emailRegex.hasMatch(value.trim())) {
+      return 'Email inválido';
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,10 +109,19 @@ class _ContactFormScreenState extends State<ContactFormScreen> {
               TextFormField(
                 controller: _phoneController,
                 decoration: const InputDecoration(labelText: 'Telefone'),
+                keyboardType: TextInputType.phone,
+                inputFormatters: [
+                  PhoneInputFormatter(
+                    allowEndlessPhone: false,
+                    defaultCountryCode: 'BR',
+                  ),
+                ],
               ),
               TextFormField(
                 controller: _emailController,
                 decoration: const InputDecoration(labelText: 'Email'),
+                keyboardType: TextInputType.emailAddress,
+                validator: _validateEmail,
               ),
               TextFormField(
                 controller: _cityController,
