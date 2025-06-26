@@ -6,8 +6,8 @@ Um aplicativo de agenda de contatos moderno e elegante desenvolvido em Flutter, 
 
 <div align="center">
   <img src="screenshots/1.png" alt="Lista de Contatos" width="250"/>
-  <img src="screenshots/2222.png" alt="Adicionar Contato" width="250"/>
-  <img src="screenshots/33333.png" alt="Editar Contato" width="250"/>
+  <img src="screenshots/2.png" alt="Adicionar Contato" width="250"/>
+  <img src="screenshots/3.png" alt="Editar Contato" width="250"/>
 </div>
 
 <div align="center">
