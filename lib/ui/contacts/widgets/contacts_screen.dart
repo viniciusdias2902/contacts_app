@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 
 class ContactsScreen extends StatefulWidget {
   const ContactsScreen({super.key});
+
   @override
   State<ContactsScreen> createState() => _ContactsState();
 }
@@ -23,7 +24,9 @@ class _ContactsState extends State<ContactsScreen> {
 
       if (response.statusCode == 200) {
         final List<dynamic> jsonList = json.decode(response.body);
-        contacts = jsonList.map((json) => Contact.fromJson(json)).toList();
+        setState(() {
+          contacts = jsonList.map((json) => Contact.fromJson(json)).toList();
+        });
       } else {
         throw Exception(
           'Erro ao carregar contatos (código ${response.statusCode})',
@@ -34,42 +37,78 @@ class _ContactsState extends State<ContactsScreen> {
     }
   }
 
+  Future<void> deleteContact(String id) async {
+    final url = Uri.parse(
+      'https://685cf7cd769de2bf085eaec7.mockapi.io/contacts/contact/$id',
+    );
+
+    try {
+      final response = await http.delete(url);
+
+      if (response.statusCode == 200) {
+        setState(() {
+          contacts.removeWhere((contact) => contact.id == id);
+        });
+      } else {
+        throw Exception('Erro ao deletar contato');
+      }
+    } catch (e) {
+      throw Exception('Erro na requisição de deletar: $e');
+    }
+  }
+
   @override
-  Widget build(BuildContext build) {
+  void initState() {
+    super.initState();
+    fetchContacts();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Agenda'), centerTitle: true),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
         child: Icon(Icons.add),
       ),
-      body: FutureBuilder(
-        future: fetchContacts(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Erro: ${snapshot.error}'));
-          } else {
-            return ListView.builder(
+      body: contacts.isEmpty
+          ? const Center(child: CircularProgressIndicator())
+          : ListView.builder(
               itemCount: contacts.length,
               itemBuilder: (context, index) {
                 final contact = contacts[index];
-                return ListTile(
-                  leading: CircleAvatar(
-                    backgroundImage: NetworkImage(contact.avatar),
+                return Dismissible(
+                  key: Key(contact.id),
+                  background: Container(
+                    color: Colors.red,
+                    alignment: Alignment.centerRight,
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    child: Icon(Icons.delete, color: Colors.white),
                   ),
-                  title: Text(contact.name),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [Text(contact.email), Text(contact.phoneNumber)],
+                  direction: DismissDirection.endToStart,
+                  onDismissed: (direction) {
+                    deleteContact(contact.id);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('${contact.name} deletado')),
+                    );
+                  },
+                  child: ListTile(
+                    leading: CircleAvatar(
+                      backgroundImage: NetworkImage(contact.avatar),
+                    ),
+                    title: Text(contact.name),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(contact.email),
+                        Text(contact.phoneNumber),
+                      ],
+                    ),
+                    isThreeLine: true,
                   ),
-                  isThreeLine: true,
                 );
               },
-            );
-          }
-        },
-      ),
+            ),
     );
   }
 }
