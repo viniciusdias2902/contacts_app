@@ -1,6 +1,8 @@
+import 'package:contacts_app/ui/contacts/viewmodel/contact_view_model.dart';
 import 'package:contacts_app/ui/contacts/widgets/contacts_screen.dart';
 import 'package:contacts_app/ui/core/app_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MainApp());
@@ -11,6 +13,13 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(theme: AppTheme.light, home: ContactsScreen());
+    return MultiProvider(
+      providers: [ChangeNotifierProvider(create: (_) => ContactViewModel())],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: AppTheme.light,
+        home: ContactsScreen(),
+      ),
+    );
   }
 }
