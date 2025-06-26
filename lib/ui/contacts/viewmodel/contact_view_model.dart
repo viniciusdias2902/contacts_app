@@ -21,4 +21,14 @@ class ContactViewModel extends ChangeNotifier {
     contacts.removeWhere((c) => c.id == id);
     notifyListeners();
   }
+
+  Future<void> add(Contact contact) async {
+    await repo.addContact(contact);
+    await load(); // recarrega a lista
+  }
+
+  Future<void> update(Contact contact) async {
+    await repo.updateContact(contact);
+    await load();
+  }
 }

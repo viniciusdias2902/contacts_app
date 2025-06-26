@@ -5,8 +5,7 @@ class ContactTile extends StatelessWidget {
   final Contact contact;
   final VoidCallback onDelete;
 
-  const ContactTile({Key? key, required this.contact, required this.onDelete})
-    : super(key: key);
+  const ContactTile({super.key, required this.contact, required this.onDelete});
 
   @override
   Widget build(BuildContext context) {
