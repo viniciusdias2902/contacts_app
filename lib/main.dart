@@ -1,3 +1,5 @@
+import 'package:contacts_app/ui/contacts/widgets/contacts_screen.dart';
+import 'package:contacts_app/ui/core/app_theme.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -9,12 +11,6 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
-    );
+    return MaterialApp(theme: AppTheme.light, home: ContactsScreen());
   }
 }
