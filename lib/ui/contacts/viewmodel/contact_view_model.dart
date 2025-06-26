@@ -24,7 +24,7 @@ class ContactViewModel extends ChangeNotifier {
 
   Future<void> add(Contact contact) async {
     await repo.addContact(contact);
-    await load(); // recarrega a lista
+    await load();
   }
 
   Future<void> update(Contact contact) async {
