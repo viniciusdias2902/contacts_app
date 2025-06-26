@@ -48,6 +48,15 @@ class _ContactsScreenState extends State<ContactsScreen> {
                 return ContactTile(
                   contact: contact,
                   onDelete: () => vm.delete(contact.id),
+                  onTap: () async {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => ContactFormScreen(contact: contact),
+                      ),
+                    );
+                    await context.read<ContactViewModel>().load();
+                  },
                 );
               },
             ),
