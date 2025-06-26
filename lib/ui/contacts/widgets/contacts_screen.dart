@@ -35,7 +35,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
             context,
             MaterialPageRoute(builder: (_) => const ContactFormScreen()),
           );
-          await context.read<ContactViewModel>().load(); // <-- recarrega!
+          await context.read<ContactViewModel>().load();
         },
         child: const Icon(Icons.add),
       ),
